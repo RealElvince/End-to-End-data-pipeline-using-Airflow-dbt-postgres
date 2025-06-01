@@ -12,6 +12,8 @@ services:
       POSTGRES_DB: weather_db
     volumes:
       - ./postgres/data:/var/lib/postgresql/data
+    networks:
+      - my_network
   af:
     container_name: airflow_conitainer
     image: apache/airflow:2.9.0
@@ -22,3 +24,13 @@ services:
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@db:5432/airflow_db
     volumes: 
       - ./airflow/dags:/opt/airflow/dags 
+    depends_on:
+      - db
+    networks:
+      - my_network
+  
+
+
+networks:
+  my_network:
+    driver: bridge
