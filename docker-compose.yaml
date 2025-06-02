@@ -16,8 +16,8 @@ services:
     networks:
       - my_network
   af:
-    container_name: airflow_conitainer
-    image: apache/airflow:2.9.0
+    container_name: airflow_container
+    image: apache/airflow:3.0.0
     ports:
       - "8000:8080"
     environment:
@@ -25,8 +25,11 @@ services:
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@db:5432/airflow_db
     volumes: 
       - ./airflow/dags:/opt/airflow/dags 
+      - ./weather_api:/opt/airflow/weather_api
     depends_on:
       - db
+    command: >
+      bash -c "airflow db migrate && airflow standalone"
     networks:
       - my_network
   
