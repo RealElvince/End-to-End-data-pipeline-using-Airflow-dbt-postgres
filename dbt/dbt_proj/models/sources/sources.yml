@@ -1,0 +1,41 @@
+version: 2
+
+sources:
+  - name: dev
+    description: "Source data for weather models"
+    database: weather_db
+  
+    tables:
+      - name: raw_weather_data
+        description: "Raw weather data ingested from external sources"
+        columns:
+          - name: id
+            description: "Unique identifier for each weather record"
+            tests:
+              - not_null
+              - unique
+          - name: temperature
+            description: "Temperature in degrees Celsius"
+            tests:
+              - not_null
+          - name: weather_descriptions
+            description: "Description of the weather condition (e.g., sunny, rainy)"
+            tests:
+              - not_null
+          - name: wind_speed
+            description: "Wind speed in km/h"
+            tests:
+              - not_null
+          - name: time
+            description: "Timestamp of the weather record"
+            tests:
+              - not_null
+          - name: inserted_at
+            description: "Timestamp when the record was inserted into the database"
+            tests:
+              - not_null
+          - name: utc_offset
+            description: "UTC offset for the timestamp"
+            tests:
+              - not_null
+      

@@ -23,14 +23,15 @@ with DAG(
     dag_id="weather_api_orchestrator",
     description="Orchestrator for Weather API DAGs",
     tags=["weather_api", "orchestrator"],
+    schedule=timedelta(minutes=5),
     default_args=default_args,
-)as dag:
-    
+) as dag:
 
-    insert_records_task = PythonOperator(
-        task_id="insert_records",
+
+    ingest_records_task = PythonOperator(
+        task_id="ingest_weather_data",
         python_callable=main,
         dag=dag
     )
 
-    insert_records_task
+    ingest_records_task

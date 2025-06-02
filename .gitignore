@@ -1,3 +1,4 @@
 .env
 weather_venv/
 postgres/
+dbt/**/profiles.yml

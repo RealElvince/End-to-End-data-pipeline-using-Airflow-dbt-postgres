@@ -23,9 +23,13 @@ services:
     environment:
 
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@db:5432/airflow_db
-    volumes: 
-      - ./airflow/dags:/opt/airflow/dags 
+      WEATHER_API_URL: ${WEATHER_API_URL}
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
       - ./weather_api:/opt/airflow/weather_api
+      - /var/run/docker.sock:/var/run/docker.sock
+    group_add:
+      - '126'
     depends_on:
       - db
     command: >
@@ -33,7 +37,19 @@ services:
     networks:
       - my_network
   
-
+  dbt:
+    container_name: dbt_container
+    image: ghcr.io/dbt-labs/dbt-postgres:latest
+    volumes:
+      - ./dbt/dbt_proj:/usr/app
+      - ./dbt:/root/.dbt
+    working_dir: /usr/app
+    environment:
+      DBT_PROFILLES_DIR: "/roots/.dbt"
+  
+    command: run
+    networks:
+      - my_network
 
 networks:
   my_network:
