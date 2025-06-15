@@ -16,7 +16,7 @@ default_args = {
     "depends_on_past": False,
     "start_date": datetime(2023, 10, 1),
     "retries": 1,
-    "catchup": False,
+   
 }
 
 with DAG(
@@ -25,13 +25,14 @@ with DAG(
     tags=["weather_api", "orchestrator"],
     schedule=timedelta(minutes=5),
     default_args=default_args,
+    catchup= alse,
 ) as dag:
 
 
     ingest_records_task = PythonOperator(
         task_id="ingest_weather_data",
         python_callable=main,
-        dag=dag
+        
     )
 
     ingest_records_task
